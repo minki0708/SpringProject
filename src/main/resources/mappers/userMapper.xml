@@ -69,6 +69,12 @@
 		where sellerIdx = #{idx} or buyerIdx = #{idx} 
 	</select> 
 	
+ 	<select id="getUserOrderInfo" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select *
+		from orderProduct2 
+		where sellerIdx = #{idx} or buyerIdx = #{idx} 
+	</select> 
+	
 	<insert id="joinProcess">
 		insert into user2 values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.tel},#{vo.email},#{vo.address},default,default,default,#{vo.content});
 	</insert>

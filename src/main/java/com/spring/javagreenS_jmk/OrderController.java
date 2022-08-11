@@ -62,9 +62,9 @@ public class OrderController {
 	@PostMapping("/paymentOk")
 	public String payment(OrderVO vo, HttpSession session,
 			Model model) {
+		session.setAttribute("vo",vo);
 		vo.setSellerIdx(orderService.getSellerIdx(vo.getProductIdx()));
 		model.addAttribute("vo",vo);
-		session.setAttribute("vo",vo);
 		return "order/paymentOk";
 	}
 	
@@ -76,7 +76,6 @@ public class OrderController {
 	public String paymentResultGet(HttpSession session,OrderVO receivePayMentVo, Model model) {
 		// 주문내역 dbOrder/dbBaesong 테이블에 저장하기(앞에서 저장했던 세션에서 가져왔다.)
 		OrderVO vo = (OrderVO) session.getAttribute("vo");
-		
 		orderService.setOrderProduct(vo,vo.getProductIdx());
 		
 //		vo.setImp_uid(receivePayMentVo.getImp_uid());

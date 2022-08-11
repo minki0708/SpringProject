@@ -9,7 +9,8 @@
   	
 	<select id="getProductList" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
 		select p.* from product2 p left join blockProduct2 b 
-		on p.idx = b.productIdx where b.productIdx is null order by p.idx desc limit #{startIndexNo},#{pageSize};
+		on p.idx = b.productIdx where b.productIdx is null and p.sell != 1
+		order by p.idx desc limit #{startIndexNo},#{pageSize};
 	</select>
 	
 	<select id="getContent" resultType="com.spring.javagreenS_jmk.vo.ProductVO">

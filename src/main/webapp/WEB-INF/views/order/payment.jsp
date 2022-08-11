@@ -78,7 +78,7 @@
 				<img src="${ctp}/pds/${fSNames[0]}" style="height:10em; width:10em"/>			
 			</div>
 			<div class="w3-col m6 w3-border-right">
-			<h5><b>${pVo.title}</b></h5><br><br><br>
+			<h5><b><input type="text" value="${pVo.title}" readonly /></b></h5><br><br><br>
 			<span class="w3-small"><font color="gray">상품상태</font> <b>${pVo.state }</b></span><br>
 			<span class="w3-small"><font color="gray">교환여부</font> <b>${pVo.exchange }</b></span>
 			</div>
@@ -112,7 +112,7 @@
 					<font color="gray">이메일</font>
 				</div>
 				<div class="w3-col m10">
-					<input id="email" name="email" class="w3-input w3-border w3-round-large" type="text" value="" style="width: 40%;padding-top: 2px"/>	
+					<input id="email" name="email" class="w3-input w3-border w3-round-large" type="text" value="" style="width: 40%;padding-top: 2px" required/>	
 				</div>
 			</div>
 			<div class="w3-row w3-margin-bottom">
@@ -160,6 +160,7 @@
         <input type="hidden" id="price" name="price"  value="${pVo.price}">
 	  	<input type="hidden" name="productIdx" value="${pVo.idx}"/> 	
 	  	<input type="hidden" name="buyerIdx" value="${sIdx}"/>
+	  	<input type="hidden" name="productName" value="${pVo.title}"/>
 		</div>
 		</div>
   	</form>

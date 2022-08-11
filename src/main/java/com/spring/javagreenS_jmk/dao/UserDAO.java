@@ -46,5 +46,7 @@ public interface UserDAO {
 	public void setBankDetail(@Param("idx") int idx, @Param("accountNumber") String accountNumber, @Param("bank") String bank);
 
 	public String signOutProcess(@Param("idx") String idx, @Param("reason") String reason, String pwd, int sIdx);
+
+	public UserVO getUserOrderInfo(int idx);
 	
 }

@@ -22,7 +22,7 @@
 <div class="container">
   <h2>결제내역</h2>
   <hr/>
-  <p>주문 물품명 : ${vo.name}</p>
+  <p>주문 물품명 : ${vo.productName}</p>
   <p>주문금액 : ${vo.price}</p>
   <p>주문자 성명 : ${vo.name}</p>
   <p>주문자 전화번호 : ${vo.tel}</p>

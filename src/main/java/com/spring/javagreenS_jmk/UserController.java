@@ -266,7 +266,7 @@ public class UserController {
 		int idx = (int) session.getAttribute("sIdx");
 		List<OrderVO> vos = userService.getOrderList(idx, part);
 		PageVO pageVo = pageProcess.totRecCnt(pag, pageSize, "order", part, "");	
-	
+		UserVO uVo = userService.getUserOrderInfo(idx);
 		for(OrderVO vo : vos) {
 			DecimalFormat decFormat = new DecimalFormat("###,###");
 			vo.setPriceShown(decFormat.format(vo.getPrice()));

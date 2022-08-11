@@ -359,6 +359,9 @@ ALTER TABLE product2 ADD CONSTRAINT FOREIGN KEY (smallIdx)
 REFERENCES smallCategory2 (smallIdx) ON UPDATE CASCADE
 ALTER TABLE product2 DROP FOREIGN KEY midiumIdx 
 
+select 
+
+
 
 select * from productReply2 where productIdx = 25
 

@@ -160,6 +160,11 @@ public class UserServiceImpl implements UserService {
 		return userDAO.getUserOutInfo(idx);
 	}
 
+	@Override
+	public UserVO getUserOrderInfo(int idx) {
+		return userDAO.getUserOrderInfo(idx);
+	}
+
 
 
 

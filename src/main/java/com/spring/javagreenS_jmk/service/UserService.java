@@ -37,4 +37,6 @@ public interface UserService {
 
 	public UserVO getUserOutInfo(int idx);
 
+	public UserVO getUserOrderInfo(int idx);
+
 }

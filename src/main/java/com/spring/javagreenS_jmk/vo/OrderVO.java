@@ -7,7 +7,7 @@ public @Data class OrderVO {
 	private int productIdx;
 	private int sellerIdx;
 	private int buyerIdx;
-	private String name;
+	private String productName;
 	private String orderDate;
 	private String address;
 	private String email;
@@ -17,8 +17,8 @@ public @Data class OrderVO {
 	private String deliveryStatus;
 	private String deliveryRequire;
 	private String deliveryDate;
-	
-	
+		
+	private String name;
 	private String reason;
 	private String priceShown;
 	private String sellerName;
