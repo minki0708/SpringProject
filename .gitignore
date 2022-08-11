@@ -1,0 +1,10 @@
+/.apt_generated/
+/.apt_generated_tests/
+/.classpath
+/.factorypath
+/.project
+/.settings/
+/.springBeans
+/pom.xml
+/src (2).zip
+/target/

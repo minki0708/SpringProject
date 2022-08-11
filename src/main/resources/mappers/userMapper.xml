@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jmk.dao.UserDAO">
+	
+	<select id="searchById" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from user2 where mid = #{mid};
+	</select>
+	
+	<select id="getNickName" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from user2 where nickName = #{nickName};
+	</select>
+	
+	<select id="searchNameTel" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from user2 where name = #{name} and tel = #{tel};
+	</select>
+	
+	<select id="searchForTempPwd" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from user2 where mid = #{mid} and name = #{name} and tel = #{tel};
+	</select>
+
+	<select id="getProductList" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select * from product2 where userIdx = #{idx} order by idx desc limit #{startIndexNo},#{pageSize};
+	</select> 
+	
+	 <select id="getMyLikes" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select p.* from product2 p,likes2 l where l.userIdx = #{idx} and l.productIdx = p.idx;
+	</select>
+	
+	<select id="getUserInfoByIdx" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from user2 where idx = #{sIdx} 
+	</select>
+	
+	<select id="getOrderList" resultType="com.spring.javagreenS_jmk.vo.OrderVO">
+		<if test="part == 'total'">
+			select o.*, p.*, 
+			(select name from user2 where idx = o.sellerIdx) as sellerName,
+			(select name from user2 where idx = o.buyerIdx) as buyerName
+			from orderProduct2 o inner join product2 p
+			on o.productIdx = p.idx
+			where sellerIdx = #{idx} or buyerIdx = #{idx}
+		</if>
+ 		<if test="part == 'buy'">
+			select o.*, p.*, 
+			(select name from user2 where idx = o.sellerIdx) as sellerName,
+			(select name from user2 where idx = o.buyerIdx) as buyerName
+			from orderProduct2 o inner join product2 p
+			on o.productIdx = p.idx
+			where buyerIdx = #{idx}
+		</if>
+		<if test="part == 'sell'">
+			select o.*, p.*, 
+			(select name from user2 where idx = o.sellerIdx) as sellerName,
+			(select name from user2 where idx = o.buyerIdx) as buyerName
+			from orderProduct2 o inner join product2 p
+			on o.productIdx = p.idx
+			where sellerIdx = #{idx}
+		</if>
+	</select> 
+	
+	<select id="getUserOutInfo" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+		select * from userOut2 where uIdx = #{idx} 
+	</select> 
+
+ 	<select id="getUserOutCheck" resultType="com.spring.javagreenS_jmk.vo.AdminVO">
+		select *
+		from orderProduct2 
+		where sellerIdx = #{idx} or buyerIdx = #{idx} 
+	</select> 
+	
+	<insert id="joinProcess">
+		insert into user2 values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.nickName},#{vo.tel},#{vo.email},#{vo.address},default,default,default,#{vo.content});
+	</insert>
+
+ 	<insert id="insertOutUserInfo">
+		insert into userOut2 values(#{idx},default,#{reason},default);
+	</insert>
+
+ 	<insert id="setBankDetail">
+		insert into userBankAccount2 values(#{idx},default,#{bank},#{accountNumber});
+	</insert> 
+
+	<update id="setTempPwd">
+		update user2 set pwd = #{tempPwd} where mid = #{mid};
+	</update>
+
+	<update id="updateInfo">
+		update user2 set pwd = #{vo.pwd}, name = #{vo.name}, nickName = #{vo.nickName}, tel = #{vo.tel}, email = #{vo.email}, address = #{vo.address}, photo = #{vo.photo}, content = #{vo.content} where mid = #{vo.mid};
+	</update>
+	
+	<update id="updateInfo2">
+		update user2 set name = #{vo.name}, nickName = #{vo.nickName}, tel = #{vo.tel}, email = #{vo.email}, address = #{vo.address}, photo = #{vo.photo}, content = #{vo.content} where mid = #{vo.mid};
+	</update>
+	
+	<delete id="deleteContent">
+		delete from product2 where idx = #{idx}
+	</delete>
+</mapper>

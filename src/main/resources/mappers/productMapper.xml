@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jmk.dao.ProductDAO">
+	<select id="totRecCnt" resultType="int">
+    	select count(*) from product2;
+  	</select> 
+  	
+	<select id="getProductList" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select p.* from product2 p left join blockProduct2 b 
+		on p.idx = b.productIdx where b.productIdx is null order by p.idx desc limit #{startIndexNo},#{pageSize};
+	</select>
+	
+	<select id="getContent" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select l.name as lName, m.name as mName, s.name as sName, count(r.idx) as readCount, p.*
+		from smallCategory2 as s, midiumCategory2 as m, largeCategory2 as l, product2 as p,readCount2 r 
+		where p.idx = #{idx} and s.smallIdx = p.smallIdx and m.midiumIdx = p.midiumIdx 
+		and l.largeIdx = p.largeIdx and r.produdctIdx = p.idx;
+	</select>
+	
+	<select id="getProductIdx" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select * from product2 where idx = #{idx};
+	</select>
+	
+	<select id="checkLikes" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select * from likes2 where productIdx = #{idx} and userIdx = #{sIdx};
+	</select>
+	
+	<select id="getLikes" resultType="int">
+		select count(*) from likes2 where productIdx = #{idx}; 
+	</select>
+ 	
+	<select id="getProductReply" resultType="com.spring.javagreenS_jmk.vo.ProductReplyVO">
+   		select p.*,u.nickName from productReply2 as p,user2 as u where p.productIdx = #{idx} and u.idx = p.userIdx order by parentIdx,idx;
+  	</select>
+  	
+	<select id="totSearchRecCnt" resultType="int">
+   		select count(*) from product2 where content=#{searchString} or address=#{searchString} or title=#{searchString}; 
+  	</select>
+  	
+	<select id="getProductSearch" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+   		select * from product2 where concat(title,content,address) regexp #{searchString} limit #{startIndexNo},#{pageSize}; 
+  	</select>
+
+	<select id="getProductByCategory" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		<if test="mCategory == 0 and sCategory == 0">
+	   		select p.*, s.name from product2 p, largeCategory2 s where p.largeIdx = #{lCategory} group by p.idx	
+		</if>
+		<if test="lCategory == 0 and sCategory == 0">
+			select p.*, s.name from product2 p, midiumCategory2 s where p.midiumIdx = #{mCategory} group by p.idx		
+		</if>
+		<if test="lCategory == 0 and mCategory == 0 ">
+			select p.*, s.name from product2 p, smallCategory2 s where p.smallIdx = #{sCategory} group by p.idx			
+		</if>
+  	</select>
+  	
+  	<select id="getReadCount" resultType="int">
+   		select count(*) from readCount2 where produdctIdx = #{idx} and userIdx = #{sIdx}
+  	</select>
+
+ 	<update id="setProductUpdate">
+		update product2 set largeIdx = #{vo.largeIdx},midiumIdx = #{vo.midiumIdx},smallIdx = #{vo.smallIdx},fName = #{vo.fName},fSName = #{vo.fSName},title = #{vo.title},content = #{vo.content},address = #{vo.address},price = #{vo.price} where idx = #{vo.idx};
+	</update>
+	
+ 	<update id="deleteParentReply">
+		update productReply2 set deleteSwitch = 1 where userIdx = #{vo.userIdx} and idx = #{vo.idx};
+	</update>
+	
+	<insert id="setProductInput">
+    	insert into product2 values(#{vo.largeIdx},#{vo.midiumIdx},#{vo.smallIdx},#{vo.userIdx},default,#{vo.fName},#{vo.fSName},#{vo.title},#{vo.content},default,default,#{vo.address},#{vo.price},#{vo.hostIp},#{vo.exchange},#{vo.state});
+  	</insert>
+  	
+	<insert id="insertLikes">
+    	insert into likes2 values(#{sIdx},#{idx});
+  	</insert>
+  	
+	<insert id="setProductReply">
+    	insert into productReply2 values(#{vo.productIdx},default,#{vo.userIdx},#{vo.parentIdx},default,#{vo.hostIp},#{vo.content},default);
+  	</insert>  
+  	
+	<insert id="setBlockProject">
+    	insert into blockProduct2 values(#{idx},default,default,#{text},default);
+  	</insert>  
+
+	<insert id="setReplyReport">
+    	insert into reportReply2 values(#{vo.reporterIdx},#{vo.userIdx},#{vo.replyIdx},default,#{vo.reportType},#{vo.detail},default,default);
+  	</insert>  
+
+	<insert id="setProductReport">
+    	insert into reportProduct2 values(#{vo.reporterIdx},#{vo.userIdx},#{vo.productIdx},default,#{vo.reportType},#{vo.detail},default,default);
+  	</insert>  
+
+	<insert id="setReadCount">
+    	insert into readCount2 values(#{idx},#{sIdx},default,default);
+  	</insert>  
+  
+  	<delete id="deleteLikes">
+  		delete from likes2 where userIdx = #{sIdx} and productIdx = #{idx};
+  	</delete>
+  	 
+  	<delete id="deleteReply">
+  		delete from productReply2 where userIdx = #{vo.userIdx} and idx = #{vo.idx};
+  	</delete> 
+</mapper>

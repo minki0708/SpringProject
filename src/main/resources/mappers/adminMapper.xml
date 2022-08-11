@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javagreenS_jmk.dao.AdminDAO">
+	<select id="checkCategory" resultType="com.spring.javagreenS_jmk.vo.CategoryVO">
+		<if test="vo.category == 'lCategory'">
+			select * from largeCategory2 where name = #{vo.name};
+		</if>
+		<if test="vo.category == 'mCategory'">
+			select * from midiumCategory2 where name = #{vo.name};
+		</if>
+		<if test="vo.category == 'sCategory'">
+			select * from smallCategory2 where name = #{vo.name};
+		</if>
+	</select>
+	
+	<select id="getLCategories" resultType="com.spring.javagreenS_jmk.vo.CategoryVO">
+		select * from largeCategory2 order by largeIdx;
+	</select>
+	
+	<select id="getCategories" resultType="com.spring.javagreenS_jmk.vo.CategoryVO">
+		<if test="vo.category == 'mCategory'">
+			select * from midiumCategory2 where largeIdx=#{vo.largeIdx};
+		</if>
+		<if test="vo.category == 'sCategory'">
+			select * from smallCategory2 where midiumIdx=#{vo.midiumIdx};
+		</if>
+	</select>
+
+	<select id="categoryList" resultType="com.spring.javagreenS_jmk.vo.CategoryVO">
+			select * from midiumCategory2 where largeIdx=#{vo.largeIdx};
+	</select>
+	
+	<select id="getUserList" resultType="com.spring.javagreenS_jmk.vo.UserVO">
+			select * from user2 
+	</select>
+	
+	<select id="getBlockedProduct" resultType="com.spring.javagreenS_jmk.vo.ProductVO">
+		select * from product2 p RIGHT JOIN blockProduct2 b on p.idx = b.productIdx order by p.idx desc;		
+	</select>
+		
+ 	<select id="getOrderList" resultType="com.spring.javagreenS_jmk.vo.AdminVO">
+		select *
+		, o.idx as orderIdx
+		, u.mid as sellerMid, u.name as sellerName, u.tel as sellerTel, u.email as sellerEmail 
+		, u2.mid as buyerMid, u2.name as buyerName, u2.tel as buyerTel, u2.email as buyerEmail
+		from orderProduct2 o inner join user2 u on o.sellerIdx = u.idx
+		inner join user2 u2 on o.buyerIdx = u2.idx 
+		inner join product2 p on p.idx = o.productIdx	 
+	</select> 
+
+ 	<select id="getChartData" resultType="com.spring.javagreenS_jmk.vo.AdminVO">
+		select a.oc, b.uc, c.pc, d.rc
+		from 
+		(select count(*) oc from orderProduct2 where orderDate between date(#{datepicker1}) and date(#{datepicker2})+1) a,
+		(select count(*) uc from user2 where joinday between date(#{datepicker1}) and date(#{datepicker2})+1) b,
+		(select count(*) pc from product2 where Date between date(#{datepicker1}) and date(#{datepicker2})+1) c,
+		(select count(*) rc from productReply2 where rDate between date(#{datepicker1}) and date(#{datepicker2})+1) d
+	</select>
+	
+	<select id="getReportList" resultType="com.spring.javagreenS_jmk.vo.AdminVO">
+		<if test="type == '상품'">
+			select *, u.mid as reportedMid, u2.mid as reporterMid  
+			from reportProduct2 r inner join user2 u on r.userIdx = u.idx
+			inner join user2 u2 on r.reporterIdx = u2.idx
+			inner join product2 p on r.productIdx= p.idx  
+		</if>
+		<if test="type == '댓글'">
+			select *, p.content as content, u.mid as reportedMid, u2.mid as reporterMid  
+			from reportReply2 r inner join user2 u on r.userIdx = u.idx
+			inner join user2 u2 on r.reporterIdx = u2.idx
+			inner join productReply2 p on r.replyIdx = p.idx 
+			inner join product2 pr on pr.idx = p.productIdx 
+		</if>
+	</select>
+	
+	<insert id="insertCategory">
+		<if test="vo.category == 'lCategory'">
+			insert into largeCategory2 values(default,#{vo.name});
+		</if>
+		<if test="vo.category == 'mCategory'">
+			insert into midiumCategory2 values(#{vo.largeIdx},default,#{vo.name});
+		</if>
+		<if test="vo.category == 'sCategory'">
+			insert into smallCategory2 values(#{vo.largeIdx},#{vo.midiumIdx},default,#{vo.name});
+		</if>
+	</insert>
+	
+	<update id="updateCategory">
+		update largeCategory2 set name = #{vo.category} where largeIdx = #{vo.largeIdx}
+	</update>
+	<update id="updateCategory2">
+		update midiumCategory2 set name = #{vo.category} where midiumIdx = #{vo.midiumIdx}
+	</update>
+	<update id="updateCategory3">
+		update smallCategory2 set name = #{vo.category} where smallIdx = #{vo.smallIdx}
+	</update>
+	
+	<delete id="deleteCategory">
+		<if test="vo.category == 'lCategory'">
+			delete from largeCategory2 where largeIdx = #{vo.largeIdx}
+		</if>
+		<if test="vo.category == 'mCategory'">
+			delete from midiumCategory2 where midiumIdx = #{vo.midiumIdx}
+		</if>
+		<if test="vo.category == 'sCategory'">
+			delete from smallCategory2 where smallIdx = #{vo.smallIdx}
+		</if>
+	</delete>
+	
+	<delete id="productDelete">
+		delete from product2 where idx = #{idx};
+	</delete> 
+
+	<delete id="productReturn">
+		delete from blockProduct2 where productIdx = #{idx};
+	</delete> 
+
+	<delete id="cancleReport">
+		delete from reportProduct2 where productIdx = #{idx};
+	</delete> 
+
+	<delete id="removeReportedProduct">
+		delete p.*,r.* 
+		from product2 p join reportProduct2 r 
+		on p.idx = r.productIdx 
+		where r.productIdx = #{idx}
+	</delete> 
+	
+	<delete id="cancleReportReply">
+		delete from reportReply2 where replyIdx = #{idx};
+	</delete> 
+
+	<delete id="removeReportedReply">
+		delete p.*, r.* 
+		from productReply2 p join reportReply2 r 
+		on p.idx = r.replyIdx 
+		where p.idx = {idx}
+	</delete> 
+</mapper>
