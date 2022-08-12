@@ -41,6 +41,7 @@ public @Data class UserVO {
 	private String photo;
 	private String content;
 	
+	private String productName;
 	private String reason;
 	private String oDate;
 	private String modiDate;

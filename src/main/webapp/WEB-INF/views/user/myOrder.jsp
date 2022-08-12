@@ -150,10 +150,10 @@
 	<jsp:include page="/WEB-INF/views/include/nav.jsp"/>
 	<div class="w3-container" style="width: 100%; max-height: 7000px; margin-top: 300px">
 		<div class="w3-row w3-round w3-flat-belize-hole" style="width: 80em;height:5em;margin: auto">
-			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">내주문 0</div>
-			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">전체 0</div>
-			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">배송중 0</div>
-			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">배송완료 0</div>
+			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">전체 ${totalOrderCnt}</div>
+			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">주문확인중 ${checkOrderCnt}</div>
+			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">배송중 ${deliveryCnt}</div>
+			<div class="w3-col m3" style="padding-left: 10%;margin-top: 2%">배송완료 ${deliveryComplCnt}</div>
 		</div>
 		<div class="w3-margin-top" style="width: 80em;margin: auto;height:3em">
 			<a class="w3-button w3-border w3-round w3-ripple w3-hover-white w3-white" href="javascript:bringProduct('total')">전체</a>
@@ -312,6 +312,6 @@
 			     	</div>
 			  	</div>
 			</div>
-			</div>
+		</div>
 </body>
 </html>

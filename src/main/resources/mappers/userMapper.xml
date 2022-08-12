@@ -69,10 +69,20 @@
 		where sellerIdx = #{idx} or buyerIdx = #{idx} 
 	</select> 
 	
- 	<select id="getUserOrderInfo" resultType="com.spring.javagreenS_jmk.vo.UserVO">
-		select *
-		from orderProduct2 
-		where sellerIdx = #{idx} or buyerIdx = #{idx} 
+ 	<select id="getTotalOrderCnt" resultType="int">
+		select count(*) from orderProduct2 where sellerIdx = #{idx} or buyerIdx = #{idx}
+	</select> 
+	
+ 	<select id="getCheckOrderCnt" resultType="int">
+		select count(deliveryStatus = "주문확인중") from orderProduct2 where sellerIdx = #{idx} or buyerIdx = #{idx}		
+	</select>
+	 
+ 	<select id="getDeliveryCnt" resultType="int">
+		select count(deliveryStatus = "배송중") from orderProduct2 where sellerIdx = #{idx} or buyerIdx = #{idx}
+	</select> 
+	
+ 	<select id="getDeliveryComplCnt" resultType="int">
+		select count(deliveryStatus = "배송완료") from orderProduct2 where sellerIdx = #{idx} or buyerIdx = #{idx}	
 	</select> 
 	
 	<insert id="joinProcess">

@@ -266,12 +266,20 @@ public class UserController {
 		int idx = (int) session.getAttribute("sIdx");
 		List<OrderVO> vos = userService.getOrderList(idx, part);
 		PageVO pageVo = pageProcess.totRecCnt(pag, pageSize, "order", part, "");	
-		UserVO uVo = userService.getUserOrderInfo(idx);
+		int totalOrderCnt = userService.getTotalOrderCnt(idx);
+		int checkOrderCnt = userService.getCheckOrderCnt(idx);
+		int deliveryCnt = userService.getDeliveryCnt(idx);
+		int deliveryComplCnt = userService.getDeliveryComplCnt(idx);
+
 		for(OrderVO vo : vos) {
 			DecimalFormat decFormat = new DecimalFormat("###,###");
 			vo.setPriceShown(decFormat.format(vo.getPrice()));
 		}
 		
+		model.addAttribute("totalOrderCnt", totalOrderCnt);
+		model.addAttribute("checkOrderCnt", checkOrderCnt);
+		model.addAttribute("deliveryCnt", deliveryCnt);
+		model.addAttribute("deliveryComplCnt", deliveryComplCnt);
 		model.addAttribute("part", part);
 		model.addAttribute("idx", idx);
 		model.addAttribute("pageVo", pageVo);

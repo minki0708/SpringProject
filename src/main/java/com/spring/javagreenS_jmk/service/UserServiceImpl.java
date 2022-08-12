@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.cj.Session;
 import com.spring.javagreenS_jmk.dao.UserDAO;
@@ -161,9 +162,25 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getUserOrderInfo(int idx) {
-		return userDAO.getUserOrderInfo(idx);
+	public int getTotalOrderCnt(int idx) {
+		return userDAO.getTotalOrderCnt(idx);
 	}
+
+	@Override
+	public int getCheckOrderCnt(int idx) {
+		return userDAO.getCheckOrderCnt(idx);
+	}
+
+	@Override
+	public int getDeliveryCnt(int idx) {
+		return userDAO.getDeliveryCnt(idx);
+	}
+
+	@Override
+	public int getDeliveryComplCnt(int idx) {
+		return userDAO.getDeliveryComplCnt(idx);
+	}
+
 
 
 

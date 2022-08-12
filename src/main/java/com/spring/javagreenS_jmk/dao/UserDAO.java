@@ -47,6 +47,12 @@ public interface UserDAO {
 
 	public String signOutProcess(@Param("idx") String idx, @Param("reason") String reason, String pwd, int sIdx);
 
-	public UserVO getUserOrderInfo(int idx);
+	public int getTotalOrderCnt(@Param("idx") int idx);
+
+	public int getCheckOrderCnt(@Param("idx")int idx);
+
+	public int getDeliveryCnt(@Param("idx")int idx);
+
+	public int getDeliveryComplCnt(@Param("idx")int idx);
 	
 }
